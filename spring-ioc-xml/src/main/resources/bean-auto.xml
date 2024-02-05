@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--    注入bean，通过 byType（通过对应bean类型的class位置进行装配）,byName（通过bean的id进行查找装配） 实现属性的自动装配-->
+    <bean id="testController" class="com.hs.ykh.auto.TestController" autowire="byType"></bean>
+
+    <bean id="testService" class="com.hs.ykh.auto.TestServiceImpl" autowire="byName"></bean>
+
+    <bean id="testDao" class="com.hs.ykh.auto.TestDaoImpl"></bean>
+</beans>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="customIoc" class="com.hs.ykh.CustomIOC"></bean>
+    <!--    注入一个实现类，通过接口类型获取实现类-->
+    <bean id="customIocInterface" class="com.hs.ykh.interfacebean.CustomIocInterfaceImpl"></bean>
+    <!--依赖注入-》set注入 通过spring注入属性值-->
+    <bean id="customIOCSet" class="com.hs.ykh.CustomIOCSet">
+        <!--        set注入，有set注入会优先set注入-->
+        <property name="desc" value="di set 注入描述"></property>
+        <property name="name" value="di set 注入描述"></property>
+        <property name="testNull">
+            <null/>
+        </property>
+    </bean>
+
+    <bean id="customIOCSetCon" class="com.hs.ykh.CustomIOCSet">
+        <!--        构造器注入-->
+        <constructor-arg name="desc" value="di构造器注入描述"></constructor-arg>
+        <constructor-arg name="name" value="di构造器注入的名称"></constructor-arg>
+    </bean>
+
+    <bean id="bigClass" class="com.hs.ykh.containter.BigClass">
+        <property name="name" value="我是大类"></property>
+        <!--        注入对象属性-->
+        <property name="smallClass" ref="smallClass"></property>
+        <!--        数组属性-->
+        <property name="attrs">
+            <array>
+                <value>1</value>
+                <value>2</value>
+                <value>3</value>
+            </array>
+        </property>
+        <!--        自定义List-->
+        <property name="smallClassList">
+            <list>
+                <bean id="smallOne" class="com.hs.ykh.containter.SmallClass">
+                    <property name="name" value="我是集合中的小类"></property>
+                </bean>
+                <ref bean="smallClass"></ref>
+            </list>
+        </property>
+        <property name="stringSmallClassMap">
+            <map>
+                <entry>
+                    <key><value>no.1</value></key>
+                    <ref bean="smallClass"></ref>
+                </entry>
+                <entry>
+                    <key><value>no.2</value></key>
+                    <ref bean="smallClassTest"></ref>
+                </entry>
+            </map>
+        </property>
+        <!--        自定义map-->
+    </bean>
+
+    <bean id="smallClass" class="com.hs.ykh.containter.SmallClass">
+        <property name="name" value="我是小类"></property>
+    </bean>
+
+    <bean id="smallClassTest" class="com.hs.ykh.containter.SmallClass">
+        <property name="name" value="我是另外的test小类"></property>
+    </bean>
+</beans>

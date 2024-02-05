@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--    开启自动扫描包，扫描com.hs.ykh包下面的所有类中标记的注解-->
+    <context:component-scan base-package="com.hs.ykh"></context:component-scan>
+
+    <context:component-scan base-package="com.hs.ykh">
+        <!--   context:exclude-filter根据规则排除     -->
+        <!--        type: 设置排除或包含的依据type="annotation"，
+        根据注解排除，expression中设置要排除的注解的全类名type="assignable"，
+        根据类型排除，expression 中设置要排除的类型的全类名-->
+        <!--        下面这句话，表示排除掉org.springframework.stereotype.Controller这个注解，即不扫描该注解-->
+        <!--        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+        <!--表示只扫描com.hs.ykh.test.User这个类-->
+        <context:include-filter type="assignable" expression="com.hs.ykh.test.User"/>
+    </context:component-scan>
+</beans>
