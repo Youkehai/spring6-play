@@ -5,6 +5,6 @@ package com.hs.ykh.bean;
  */
 public interface ApplicationContext {
 
-    Object getBean(Class clazz);
+    Object getBean(Class<?> clazz);
 
 }

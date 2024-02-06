@@ -2,17 +2,14 @@ package com.hs.ykh.bean;
 
 import com.hs.ykh.annotation.Autowired;
 import com.hs.ykh.annotation.Bean;
-import com.hs.ykh.dao.DaoTest;
 import com.hs.ykh.service.ServiceTest;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -24,12 +21,12 @@ import java.util.Map;
 public class AnnotationApplicationContext implements ApplicationContext {
 
     //bean工厂集合
-    private Map<Class, Object> beanFactory = new HashMap<>();
+    private final Map<Class<?>, Object> beanFactory = new HashMap<>();
 
     private static String rootPath;
 
     @Override
-    public Object getBean(Class clazz) {
+    public Object getBean(Class<?> clazz) {
         return beanFactory.get(clazz);
     }
 
@@ -53,11 +50,8 @@ public class AnnotationApplicationContext implements ApplicationContext {
                 //扫描包
                 loadBean(new File(filePath));
             }
-        } catch (IOException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (IOException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException |
+                 IllegalAccessException | InstantiationException e) {
             throw new RuntimeException(e);
         }
         loadDi();
@@ -68,8 +62,8 @@ public class AnnotationApplicationContext implements ApplicationContext {
      */
     private void loadDi() {
         //1.遍历 beanFactory 拿到所有 class 对象
-        for (Map.Entry<Class, Object> classObjectEntry : beanFactory.entrySet()) {
-            Class clazz = classObjectEntry.getValue().getClass();
+        for (Map.Entry<Class<?>, Object> classObjectEntry : beanFactory.entrySet()) {
+            Class<?> clazz = classObjectEntry.getValue().getClass();
             //获取所有属性
             Field[] declaredFields = clazz.getDeclaredFields();
             //遍历属性，判断所有属性是否有 autoWired的注解
@@ -90,7 +84,7 @@ public class AnnotationApplicationContext implements ApplicationContext {
     /**
      * 扫描包，并生成类的实例化
      *
-     * @param file
+     * @param  file 被扫描的文件
      */
     private void loadBean(File file) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         //1.判断是否为文件夹
